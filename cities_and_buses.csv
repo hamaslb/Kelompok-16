@@ -1,0 +1,14 @@
+city
+Jakarta
+Bogor
+Depok
+Tangerang
+Bandung
+
+origin_city,destination_city,departure_datetime,bus_class,price
+Jakarta,Bogor,01-06-2023 08:00,Gold,150000
+Jakarta,Depok,01-06-2023 12:00,Silver,100000
+Jakarta,Tangerang,01-06-2023 18:00,Bronze,80000
+Jakarta,Bandung,02-06-2023 09:00,Gold,120000
+Tangerang,Bogor,02-06-2023 13:00,Silver,90000
+Tangerang,Depok,02-06-2023 17:00,Bronze,70000
