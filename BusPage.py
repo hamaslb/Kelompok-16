@@ -5,11 +5,13 @@ import smtplib
 from tkinter import *
 from tkinter import messagebox, ttk
 import customtkinter as ctk
-
+import string
 
 selected_bus = None
 buses_info = []
-
+selected_seat = []
+payment_method = ""
+otp = ""
 
 def create_user_table():
     with open('Kelompok-16/user_data.csv', 'a', newline='') as file:
@@ -166,15 +168,17 @@ def toggle_seat(button):
 
 
 def confirm_seat_selection(bus, seats):
-    selected_seats = []
+    global selected_seat
+    selected_seat = []  # Pastikan selected_seat di-reset setiap kali konfirmasi kursi dilakukan
     for row in seats:
         for seat in row:
             if seat.config('relief')[-1] == 'sunken':
-                selected_seats.append(seat.cget('text'))
+                selected_seat.append(seat.cget('text'))
     
-    if selected_seats:
-        messagebox.showinfo("Success", f"Seats selected: {', '.join(selected_seats)}")
-        show_payment_page() 
+    if selected_seat:
+        print(f"Selected seats: {selected_seat}")  # Debugging
+        messagebox.showinfo("Success", f"Seats selected: {', '.join(selected_seat)}")
+        show_payment_page()
     else:
         messagebox.showerror("Error", "No seats selected. Please select at least one seat.")
 
@@ -288,12 +292,55 @@ def show_payment_page():
     ctk.CTkButton(payment_frame, text="Back", font=("Arial", 12), command=lambda: show_seat_selection(selected_bus, buses_info)).pack()
 
 def confirm_payment(method):
+    global payment_method
+    payment_method = method
     messagebox.showinfo("Payment Success", f"Payment through {method} was successful!")
-    show_city_selection()
+    show_confirmation_page()  # Panggil halaman konfirmasi setelah pembayaran berhasil
+
+
+def generate_booking_code():
+    return ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
+
+
+def show_confirmation_page():
+    hide_all_frames()
+    confirmation_frame.pack()
+
+    for widget in confirmation_frame.winfo_children():
+        widget.destroy()
+
+    ctk.CTkLabel(confirmation_frame, text="Booking Confirmation", font=("Arial", 16)).pack(pady=10)
+
+    booking_code = generate_booking_code()
+    
+    booking_details = f"""
+    Booking Code: {booking_code}
+    Bus: {selected_bus[3]}
+    From: {selected_bus[0]}
+    To: {selected_bus[1]}
+    Departure: {selected_bus[2]}
+    Seats: {', '.join(selected_seat)}
+    Payment Method: {payment_method}
+    """
+
+    # Menambahkan informasi harga bus
+    try:
+        price_per_seat = int(selected_bus[4])
+        total_price = len(selected_seat) * price_per_seat
+        booking_details += f"\nTotal Price: {total_price}"
+    except ValueError:
+        booking_details += "\nTotal Price: Error retrieving price"
+
+    ctk.CTkLabel(confirmation_frame, text=booking_details, font=("Arial", 12), justify=LEFT).pack(pady=10)
+
+    ctk.CTkButton(confirmation_frame, text="Finish", font=("Arial", 12), command=show_city_selection).pack(pady=20)
+
+
 
 def hide_all_frames():
-    for frame in [login_frame, register_frame, city_selection_frame, bus_selection_frame, seat_selection_frame, payment_frame]:
+    for frame in [login_frame, register_frame, city_selection_frame, bus_selection_frame, seat_selection_frame, payment_frame, confirmation_frame]:
         frame.pack_forget()
+
 
 
 root = ctk.CTk()
@@ -413,6 +460,8 @@ seat_selection_frame = ctk.CTkFrame(root)
 
 
 payment_frame = ctk.CTkFrame(root)
+
+confirmation_frame = ctk.CTkFrame(root)
 
 
 show_login_frame()
