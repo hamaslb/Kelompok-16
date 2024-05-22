@@ -4,13 +4,17 @@ from email.message import EmailMessage
 import smtplib
 from tkinter import *
 from tkinter import messagebox, ttk
+import customtkinter as ctk
+
+
+selected_bus = None
+buses_info = []
 
 
 def create_user_table():
     with open('Kelompok-16/user_data.csv', 'a', newline='') as file:
         writer = csv.writer(file)
         writer.writerow(['name', 'username', 'email', 'phone', 'password', 'nik'])
-
 
 def send_otp():
     global otp
@@ -21,7 +25,7 @@ def send_otp():
     server.starttls()
 
     from_mail = 'mhmmd.rayhan1104@gmail.com'
-    app_password = 'mkyh haip obvy idtg'  
+    app_password = 'mkyh haip obvy idtg' 
 
     try:
         server.login(from_mail, app_password)
@@ -45,7 +49,7 @@ def verify_otp():
     if entered_otp == otp:
         messagebox.showinfo("Success", "OTP verified successfully!")
         save_user_data()
-        show_city_selection()  
+        show_city_selection() 
     else:
         messagebox.showerror("Error", "Invalid OTP. Please try again.")
 
@@ -70,7 +74,7 @@ def login():
     
     with open('kelompok-16/user_data.csv', 'r') as file:
         reader = csv.reader(file)
-        next(reader)  
+        next(reader)  # Skip header
         for row in reader:
             if row[1] == username and row[4] == password:
                 messagebox.showinfo("Success", "Login successful!")
@@ -78,56 +82,67 @@ def login():
                 return
     messagebox.showerror("Error", "Invalid username or password.")
 
+def hide_all_frames():
+    login_frame.pack_forget()
+    register_frame.pack_forget()
+    city_selection_frame.pack_forget()
+    bus_selection_frame.pack_forget()
+    seat_selection_frame.pack_forget()
+
 
 def show_login_frame():
-    register_frame.pack_forget()
+    hide_all_frames()
     login_frame.pack()
 
+
 def show_register_frame():
-    login_frame.pack_forget()
+    hide_all_frames()
     register_frame.pack()
 
 
 def show_city_selection():
-    login_frame.pack_forget()  
-    city_selection_frame.pack()  
+    hide_all_frames()
+    city_selection_frame.pack() 
 
 
 def show_bus_selection_page(buses_info):
-    city_selection_frame.pack_forget()  
+    hide_all_frames()
     bus_selection_frame.pack()  
 
-   
     for widget in bus_selection_frame.winfo_children():
         widget.destroy()
 
-    Label(bus_selection_frame, text="Bus", font=("Arial", 12)).grid(row=0, column=0, padx=5, pady=5)
-    Label(bus_selection_frame, text="Price", font=("Arial", 12)).grid(row=0, column=1, padx=5, pady=5)
-    Label(bus_selection_frame, text="Departure Time", font=("Arial", 12)).grid(row=0, column=2, padx=5, pady=5)
-    Label(bus_selection_frame, text="Select", font=("Arial", 12)).grid(row=0, column=3, padx=5, pady=5)
+    ctk.CTkLabel(bus_selection_frame, text="Bus", font=("Arial", 12)).grid(row=0, column=0, padx=5, pady=5)
+    ctk.CTkLabel(bus_selection_frame, text="Price", font=("Arial", 12)).grid(row=0, column=1, padx=5, pady=5)
+    ctk.CTkLabel(bus_selection_frame, text="Departure Time", font=("Arial", 12)).grid(row=0, column=2, padx=5, pady=5)
+    ctk.CTkLabel(bus_selection_frame, text="Select", font=("Arial", 12)).grid(row=0, column=3, padx=5, pady=5)
 
     for i, bus in enumerate(buses_info, start=1):
-        Label(bus_selection_frame, text=bus[3], font=("Arial", 10)).grid(row=i, column=0, padx=5, pady=5)
-        Label(bus_selection_frame, text=bus[4], font=("Arial", 10)).grid(row=i, column=1, padx=5, pady=5)
-        Label(bus_selection_frame, text=bus[2], font=("Arial", 10)).grid(row=i, column=2, padx=5, pady=5)
-        Button(bus_selection_frame, text="Select", font=("Arial", 10), 
+        ctk.CTkLabel(bus_selection_frame, text=bus[3], font=("Arial", 10)).grid(row=i, column=0, padx=5, pady=5)
+        ctk.CTkLabel(bus_selection_frame, text=bus[4], font=("Arial", 10)).grid(row=i, column=1, padx=5, pady=5)
+        ctk.CTkLabel(bus_selection_frame, text=bus[2], font=("Arial", 10)).grid(row=i, column=2, padx=5, pady=5)
+        ctk.CTkButton(bus_selection_frame, text="Select", font=("Arial", 10), 
                command=lambda bus=bus: show_seat_selection(bus, buses_info)).grid(row=i, column=3, padx=5, pady=5)
 
-    Button(bus_selection_frame, text="Back", font=("Arial", 12), 
-           command=show_city_selection).grid(row=i+1, column=1, pady=10)
+    ctk.CTkButton(bus_selection_frame, text="Back", font=("Arial", 12), 
+           command=show_city_selection).grid(row=i+1, column=2, pady=10)
 
 
-def show_seat_selection(bus, buses_info):
-    bus_selection_frame.pack_forget()  
-    seat_selection_frame.pack()  
+def show_seat_selection(bus, buses_info_local):
+    global selected_bus, buses_info
+    selected_bus = bus
+    buses_info = buses_info_local
 
-   
+    hide_all_frames()
+    seat_selection_frame.pack()
+
+    
     for widget in seat_selection_frame.winfo_children():
         widget.destroy()
 
-    Label(seat_selection_frame, text=f"Select Seats for {bus[0]} to {bus[1]}", font=("Arial", 12)).grid(row=0, column=0, columnspan=4, padx=5, pady=5)
+    ctk.CTkLabel(seat_selection_frame, text=f"Select Seats for {bus[0]} to {bus[1]}", font=("Arial", 12)).grid(row=0, column=0, columnspan=4, padx=5, pady=5)
 
-   
+    
     seats = []
     for i in range(4):
         row = []
@@ -138,8 +153,9 @@ def show_seat_selection(bus, buses_info):
             row.append(seat_button)
         seats.append(row)
 
-    Button(seat_selection_frame, text="Confirm", font=("Arial", 12), command=lambda: confirm_seat_selection(bus, seats)).grid(row=5, column=1, columnspan=2, pady=10)
-    Button(seat_selection_frame, text="Back", font=("Arial", 12), command=lambda: show_bus_selection_page(buses_info)).grid(row=6, column=1, columnspan=2, pady=10)
+    ctk.CTkButton(seat_selection_frame, text="Confirm", font=("Arial", 12), command=lambda: confirm_seat_selection(bus, seats)).grid(row=5, column=1, columnspan=2, pady=10)
+    ctk.CTkButton(seat_selection_frame, text="Back", font=("Arial", 12), command=lambda: show_bus_selection_page(buses_info)).grid(row=6, column=1, columnspan=2, pady=10)
+    
 
 
 def toggle_seat(button):
@@ -158,9 +174,9 @@ def confirm_seat_selection(bus, seats):
     
     if selected_seats:
         messagebox.showinfo("Success", f"Seats selected: {', '.join(selected_seats)}")
+        show_payment_page() 
     else:
         messagebox.showerror("Error", "No seats selected. Please select at least one seat.")
-
 
 
 def get_cities():
@@ -169,7 +185,7 @@ def get_cities():
         reader = csv.reader(file)
         next(reader)  
         for row in reader:
-            if len(row) == 0: 
+            if len(row) == 0:  
                 break
             cities.append(row[0])
     return cities
@@ -204,13 +220,13 @@ def show_selection():
                 continue
 
             if not city_section and len(row) > 1:
-                print(f"Checking row: {row}") 
+                print(f"Checking row: {row}")  
                 if (row[0] == origin_city and row[1] == destination_city 
                         and row[2].startswith(departure_date) and row[3] in selected_classes):
                     buses_info.append(row)
 
     if buses_info:
-        print(f"Buses found: {buses_info}") 
+        print(f"Buses found: {buses_info}")  
         show_bus_selection_page(buses_info)
     else:
         print("No buses found")  
@@ -218,9 +234,8 @@ def show_selection():
 
 
 
-
 def close_bus_selection():
-    bus_selection_frame.pack_forget()
+    hide_all_frames()
 
 
 def insert_cities_and_buses():
@@ -235,88 +250,126 @@ def insert_cities_and_buses():
         ("Tangerang", "Bogor", "02-06-2023 13:00", "Silver", 90000),
         ("Tangerang", "Depok", "02-06-2023 17:00", "Bronze", 70000),
     ]
-    with open('Kelompok-16\cities_and_buses.csv', 'w', newline='') as file:  
+    with open('Kelompok-16\cities_and_buses.csv', 'w', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow(["city"])  
+        writer.writerow(["city"])
         for city in cities:
             writer.writerow([city])
-        writer.writerow([])  
+        writer.writerow([]) 
         writer.writerow(["origin_city", "destination_city", "departure_datetime", "bus_class", "price"]) 
         for bus in buses:
             writer.writerow(bus)
 
 
-root = Tk()
+
+def show_payment_page():
+    hide_all_frames()
+    payment_frame.pack()
+
+    ctk.CTkLabel(payment_frame, text="Select Payment Method", font=("Arial", 16)).pack(pady=10)
+
+    payment_methods = [
+        ("Bank BCA Virtual Account", "BCA"),
+        ("Bank Mandiri Virtual Account", "Mandiri"),
+        ("Bank BNI Virtual Account", "BNI"),
+        ("Dana E-Wallet", "Dana"),
+        ("OVO E-Wallet", "OVO"),
+        ("GoPay E-Wallet", "GoPay"),
+        ("ShopeePay E-Wallet", "ShopeePay")
+    ]
+
+    selected_payment_method = StringVar()
+    selected_payment_method.set(payment_methods[0][1])
+
+    for text, method in payment_methods:
+        ctk.CTkRadioButton(payment_frame, text=text, variable=selected_payment_method, value=method, font=("Arial", 12)).pack(anchor='w', pady=5)
+
+    ctk.CTkButton(payment_frame, text="Confirm Payment", font=("Arial", 12), command=lambda: confirm_payment(selected_payment_method.get())).pack(pady=20)
+    ctk.CTkButton(payment_frame, text="Back", font=("Arial", 12), command=lambda: show_seat_selection(selected_bus, buses_info)).pack()
+
+def confirm_payment(method):
+    messagebox.showinfo("Payment Success", f"Payment through {method} was successful!")
+    show_city_selection()
+
+def hide_all_frames():
+    for frame in [login_frame, register_frame, city_selection_frame, bus_selection_frame, seat_selection_frame, payment_frame]:
+        frame.pack_forget()
+
+
+root = ctk.CTk()
 root.title("Amour Biz")
-root.geometry("400x600")
+root.geometry("500x500")
 
 create_user_table()
 
 
-login_frame = Frame(root)
-Label(login_frame, text="Login", font=("Arial", 16)).pack(pady=10)
 
-Label(login_frame, text="Username:", font=("Arial", 12)).pack(pady=5)
-entry_login_username = Entry(login_frame, font=("Arial", 12))
-entry_login_username.pack(pady=5)
+login_frame = ctk.CTkFrame(root)
 
-Label(login_frame, text="Password:", font=("Arial", 12)).pack(pady=5)
-entry_login_password = Entry(login_frame, font=("Arial", 12), show="*")
-entry_login_password.pack(pady=5)
+ctk.CTkLabel(login_frame, text="Username", font=("Arial", 12)).grid(row=0, column=0, padx=5, pady=5)
+entry_login_username = ctk.CTkEntry(login_frame)
+entry_login_username.grid(row=0, column=1, padx=5, pady=5)
 
-Button(login_frame, text="Login", font=("Arial", 12), command=login).pack(pady=10)
-Button(login_frame, text="Register", font=("Arial", 12), command=show_register_frame).pack(pady=10)
+ctk.CTkLabel(login_frame, text="Password", font=("Arial", 12)).grid(row=1, column=0, padx=5, pady=5)
+entry_login_password = ctk.CTkEntry(login_frame, show='*')
+entry_login_password.grid(row=1, column=1, padx=5, pady=5)
 
-
-register_frame = Frame(root)
-
-Label(register_frame, text="Name:", font=("Arial", 12)).pack(pady=5)
-entry_name = Entry(register_frame, font=("Arial", 12))
-entry_name.pack(pady=5)
-
-Label(register_frame, text="Username:", font=("Arial", 12)).pack(pady=5)
-entry_username = Entry(register_frame, font=("Arial",12))
-entry_username.pack(pady=5)
-
-Label(register_frame, text="Email:", font=("Arial", 12)).pack(pady=5)
-entry_email = Entry(register_frame, font=("Arial", 12))
-entry_email.pack(pady=5)
-
-Label(register_frame, text="Phone:", font=("Arial", 12)).pack(pady=5)
-entry_phone = Entry(register_frame, font=("Arial", 12))
-entry_phone.pack(pady=5)
-
-Label(register_frame, text="Password:", font=("Arial", 12)).pack(pady=5)
-entry_password = Entry(register_frame, font=("Arial", 12), show="*")
-entry_password.pack(pady=5)
-
-Label(register_frame, text="NIK:", font=("Arial", 12)).pack(pady=5)
-entry_nik = Entry(register_frame, font=("Arial", 12))
-entry_nik.pack(pady=5)
-
-Button(register_frame, text="Send OTP", font=("Arial", 12), command=send_otp).pack(pady=10)
-
-Label(register_frame, text="Enter OTP:", font=("Arial", 12)).pack(pady=5)
-entry_otp = Entry(register_frame, font=("Arial", 12))
-entry_otp.pack(pady=5)
-
-Button(register_frame, text="Verify OTP", font=("Arial", 12), command=verify_otp).pack(pady=10)
-Button(register_frame, text="Back to Login", font=("Arial", 12), command=show_login_frame).pack(pady=10)
+ctk.CTkButton(login_frame, text="Login", font=("Arial", 12), command=login).grid(row=2, column=0, columnspan=2, pady=10)
+ctk.CTkButton(login_frame, text="Go to Register", font=("Arial", 12), command=show_register_frame).grid(row=3, column=0, columnspan=2, pady=10)
 
 
-city_selection_frame = Frame(root)
+register_frame = ctk.CTkFrame(root)
 
-Label(city_selection_frame, text="Select Origin City:", font=("Arial", 12)).pack(pady=10)
+ctk.CTkLabel(register_frame, text="Name", font=("Arial", 12)).grid(row=0, column=0, padx=5, pady=5)
+entry_name = ctk.CTkEntry(register_frame)
+entry_name.grid(row=0, column=1, padx=5, pady=5)
+
+ctk.CTkLabel(register_frame, text="Username", font=("Arial", 12)).grid(row=1, column=0, padx=5, pady=5)
+entry_username = ctk.CTkEntry(register_frame)
+entry_username.grid(row=1, column=1, padx=5, pady=5)
+
+ctk.CTkLabel(register_frame, text="Email", font=("Arial", 12)).grid(row=2, column=0, padx=5, pady=5)
+entry_email = ctk.CTkEntry(register_frame)
+entry_email.grid(row=2, column=1, padx=5, pady=5)
+
+ctk.CTkLabel(register_frame, text="Phone", font=("Arial", 12)).grid(row=3, column=0, padx=5, pady=5)
+entry_phone = ctk.CTkEntry(register_frame)
+entry_phone.grid(row=3, column=1, padx=5, pady=5)
+
+ctk.CTkLabel(register_frame, text="Password", font=("Arial", 12)).grid(row=4, column=0, padx=5, pady=5)
+entry_password = ctk.CTkEntry(register_frame, show='*')
+entry_password.grid(row=4, column=1, padx=5, pady=5)
+
+ctk.CTkLabel(register_frame, text="NIK", font=("Arial", 12)).grid(row=5, column=0, padx=5, pady=5)
+entry_nik = ctk.CTkEntry(register_frame)
+entry_nik.grid(row=5, column=1, padx=5, pady=5)
+
+ctk.CTkButton(register_frame, text="Register", font=("Arial", 12), command=send_otp).grid(row=6, column=0, columnspan=2, pady=10)
+
+ctk.CTkLabel(register_frame, text="OTP", font=("Arial", 12)).grid(row=7, column=0, padx=5, pady=5)
+entry_otp = ctk.CTkEntry(register_frame)
+entry_otp.grid(row=7, column=1, padx=5, pady=5)
+
+ctk.CTkButton(register_frame, text="Verify OTP", font=("Arial", 12), command=verify_otp).grid(row=8, column=0, columnspan=2, pady=10)
+
+ctk.CTkButton(register_frame, text="Go to Login", font=("Arial", 12), command=show_login_frame).grid(row=9, column=0, columnspan=2, pady=10)
+
+register_frame.pack()
+
+
+city_selection_frame = ctk.CTkFrame(root)
+
+ctk.CTkLabel(city_selection_frame, text="Select Origin City:", font=("Arial", 12)).pack(pady=10)
 origin_combobox = ttk.Combobox(city_selection_frame, values=get_cities(), font=("Arial", 12))
 origin_combobox.pack(pady=5)
 
-Label(city_selection_frame, text="Select Destination City:", font=("Arial", 12)).pack(pady=10)
+ctk.CTkLabel(city_selection_frame, text="Select Destination City:", font=("Arial", 12)).pack(pady=10)
 destination_combobox = ttk.Combobox(city_selection_frame, values=get_cities(), font=("Arial", 12))
 destination_combobox.pack(pady=5)
 
-Label(city_selection_frame, text="Select Departure Date:", font=("Arial", 12)).pack(pady=10)
+ctk.CTkLabel(city_selection_frame, text="Select Departure Date:", font=("Arial", 12)).pack(pady=10)
 
-date_frame = Frame(city_selection_frame)
+date_frame = ctk.CTkFrame(city_selection_frame)
 date_frame.pack(pady=5)
 
 days = list(range(1, 32))
@@ -330,9 +383,9 @@ month_combobox.grid(row=0, column=1, padx=5)
 year_combobox = ttk.Combobox(date_frame, values=years, width=7, font=("Arial", 12))
 year_combobox.grid(row=0, column=2, padx=5)
 
-Label(city_selection_frame, text="Select Bus Classes:", font=("Arial", 12)).pack(pady=10)
+ctk.CTkLabel(city_selection_frame, text="Select Bus Classes:", font=("Arial", 12)).pack(pady=10)
 
-class_frame = Frame(city_selection_frame)
+class_frame = ctk.CTkFrame(city_selection_frame)
 class_frame.pack(pady=5)
 
 gold_var = BooleanVar()
@@ -348,15 +401,18 @@ silver_check.grid(row=0, column=1, padx=5)
 bronze_check = Checkbutton(class_frame, text="Bronze", variable=bronze_var, font=("Arial", 12))
 bronze_check.grid(row=0, column=2, padx=5)
 
-Button(city_selection_frame, text="Show Selection", font=("Arial", 12), command=show_selection).pack(pady=20)
+ctk.CTkButton(city_selection_frame, text="Show Selection", font=("Arial", 12), command=show_selection).pack(pady=20)
 
 
-bus_selection_frame = Frame(root)
+bus_selection_frame = ctk.CTkFrame(root)
 
-Button(bus_selection_frame, text="Close", font=("Arial", 12), command=close_bus_selection).grid(row=0, column=3, padx=5, pady=5)
+ctk.CTkButton(bus_selection_frame, text="Close", font=("Arial", 12), command=close_bus_selection).grid(row=0, column=3, padx=5, pady=5)
 
 
-seat_selection_frame = Frame(root)
+seat_selection_frame = ctk.CTkFrame(root)
+
+
+payment_frame = ctk.CTkFrame(root)
 
 
 show_login_frame()
