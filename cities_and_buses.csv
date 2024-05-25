@@ -6,9 +6,27 @@ Tangerang
 Bandung
 
 origin_city,destination_city,departure_datetime,bus_class,price
-Jakarta,Bogor,01-06-2023 08:00,Gold,150000
-Jakarta,Depok,01-06-2023 12:00,Silver,100000
-Jakarta,Tangerang,01-06-2023 18:00,Bronze,80000
-Jakarta,Bandung,02-06-2023 09:00,Gold,120000
-Tangerang,Bogor,02-06-2023 13:00,Silver,90000
-Tangerang,Depok,02-06-2023 17:00,Bronze,70000
+Jakarta,Bogor,01-06-2024 08:00,Gold,100000
+Jakarta,Bogor,01-06-2024 08:00,Silver,80000
+Jakarta,Bogor,01-06-2024 08:00,Bronze,60000
+Jakarta,Depok,01-06-2024 12:00,Gold,70000
+Jakarta,Depok,01-06-2024 12:00,Silver,50000
+Jakarta,Depok,01-06-2024 12:00,Bronze,30000
+Jakarta,Tangerang,01-06-2024 10:00,Gold,70000
+Jakarta,Tangerang,01-06-2024 10:00,Silver,50000
+Jakarta,Tangerang,01-06-2024 10:00,Bronze,30000
+Jakarta,Bandung,01-06-2024 09:00,Gold,200000
+Jakarta,Bandung,01-06-2024 09:00,Silver,150000
+Jakarta,Bandung,01-06-2024 09:00,Bronze,120000
+Bogor,Jakarta,01-06-2024 13:00,Gold,100000
+Bogor,Jakarta,01-06-2024 13:00,Silver,80000
+Bogor,Jakarta,01-06-2024 13:00,Bronze,60000
+Bogor,Tangerang,01-06-2024 09:00,Gold,110000
+Bogor,Tangerang,01-06-2024 09:00,Silver,90000
+Bogor,Tangerang,01-06-2024 09:00,Bronze,70000
+Bogor,Depok,01-06-2024 11:00,Gold,70000
+Bogor,Depok,01-06-2024 11:00,Silver,50000
+Bogor,Depok,01-06-2024 11:00,Bronze,30000
+Bogor,Bandung,01-06-2024 10:00,Gold,150000
+Bogor,Bandung,01-06-2024 10:00,Silver,130000
+Bogor,Bandung,01-06-2024 10:00,Bronze,100000

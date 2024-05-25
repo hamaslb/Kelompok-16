@@ -13,6 +13,7 @@ selected_seat = []
 payment_method = ""
 otp = ""
 
+
 def create_user_table():
     with open('Kelompok-16/user_data.csv', 'a', newline='') as file:
         writer = csv.writer(file)
@@ -57,6 +58,7 @@ def verify_otp():
 
 
 def save_user_data():
+
     name = entry_name.get()
     username = entry_username.get()
     email = entry_email.get()
@@ -76,7 +78,7 @@ def login():
     
     with open('kelompok-16/user_data.csv', 'r') as file:
         reader = csv.reader(file)
-        next(reader)  # Skip header
+        next(reader)  
         for row in reader:
             if row[1] == username and row[4] == password:
                 messagebox.showinfo("Success", "Login successful!")
@@ -90,7 +92,9 @@ def hide_all_frames():
     city_selection_frame.pack_forget()
     bus_selection_frame.pack_forget()
     seat_selection_frame.pack_forget()
-
+    payment_frame.pack_forget()
+    confirmation_frame.pack_forget()
+    payment_confirmation_frame.pack_forget()
 
 def show_login_frame():
     hide_all_frames()
@@ -138,26 +142,29 @@ def show_seat_selection(bus, buses_info_local):
     hide_all_frames()
     seat_selection_frame.pack()
 
-    
     for widget in seat_selection_frame.winfo_children():
         widget.destroy()
 
-    ctk.CTkLabel(seat_selection_frame, text=f"Select Seats for {bus[0]} to {bus[1]}", font=("Arial", 12)).grid(row=0, column=0, columnspan=4, padx=5, pady=5)
+    ctk.CTkLabel(seat_selection_frame, text=f"Select Seats for {bus[0]} to {bus[1]} ({bus[3]} Class)", font=("Arial", 12)).grid(row=0, column=0, columnspan=4, padx=5, pady=5)
 
-    
+    seat_count = {"Gold": 4, "Silver": 8, "Bronze": 16}
+    rows = (seat_count[bus[3]] + 3) // 4  
+
     seats = []
-    for i in range(4):
+    for i in range(rows):
         row = []
         for j in range(4):
+            seat_index = i * 4 + j
+            if seat_index >= seat_count[bus[3]]:
+                break
             seat_button = Button(seat_selection_frame, text=f"{chr(65+i)}{j+1}", font=("Arial", 10))
             seat_button.config(command=lambda b=seat_button: toggle_seat(b))
             seat_button.grid(row=i+1, column=j, padx=5, pady=5)
             row.append(seat_button)
         seats.append(row)
 
-    ctk.CTkButton(seat_selection_frame, text="Confirm", font=("Arial", 12), command=lambda: confirm_seat_selection(bus, seats)).grid(row=5, column=1, columnspan=2, pady=10)
-    ctk.CTkButton(seat_selection_frame, text="Back", font=("Arial", 12), command=lambda: show_bus_selection_page(buses_info)).grid(row=6, column=1, columnspan=2, pady=10)
-    
+    ctk.CTkButton(seat_selection_frame, text="Confirm", font=("Arial", 12), command=lambda: confirm_seat_selection(bus, seats)).grid(row=rows+1, column=1, columnspan=2, pady=10)
+    ctk.CTkButton(seat_selection_frame, text="Back", font=("Arial", 12), command=lambda: show_bus_selection_page(buses_info)).grid(row=rows+2, column=1, columnspan=2, pady=10)
 
 
 def toggle_seat(button):
@@ -169,14 +176,14 @@ def toggle_seat(button):
 
 def confirm_seat_selection(bus, seats):
     global selected_seat
-    selected_seat = []  # Pastikan selected_seat di-reset setiap kali konfirmasi kursi dilakukan
+    selected_seat = []
     for row in seats:
         for seat in row:
             if seat.config('relief')[-1] == 'sunken':
                 selected_seat.append(seat.cget('text'))
-    
+
     if selected_seat:
-        print(f"Selected seats: {selected_seat}")  # Debugging
+        print(f"Selected seats: {selected_seat}")
         messagebox.showinfo("Success", f"Seats selected: {', '.join(selected_seat)}")
         show_payment_page()
     else:
@@ -247,12 +254,30 @@ def insert_cities_and_buses():
         "Jakarta", "Bogor", "Depok", "Tangerang", "Bandung",
     ]
     buses = [
-        ("Jakarta", "Bogor", "01-06-2023 08:00", "Gold", 150000),
-        ("Jakarta", "Depok", "01-06-2023 12:00", "Silver", 100000),
-        ("Jakarta", "Tangerang", "01-06-2023 18:00", "Bronze", 80000),
-        ("Jakarta", "Bandung", "02-06-2023 09:00", "Gold", 120000),
-        ("Tangerang", "Bogor", "02-06-2023 13:00", "Silver", 90000),
-        ("Tangerang", "Depok", "02-06-2023 17:00", "Bronze", 70000),
+        ("Jakarta", "Bogor", "01-06-2024 08:00", "Gold", 100000),
+        ("Jakarta", "Bogor", "01-06-2024 08:00", "Silver", 80000),
+        ("Jakarta", "Bogor", "01-06-2024 08:00", "Bronze", 60000),
+        ("Jakarta", "Depok", "01-06-2024 12:00", "Gold", 70000),
+        ("Jakarta", "Depok", "01-06-2024 12:00", "Silver", 50000),
+        ("Jakarta", "Depok", "01-06-2024 12:00", "Bronze", 30000),
+        ("Jakarta", "Tangerang", "01-06-2024 10:00", "Gold", 70000),
+        ("Jakarta", "Tangerang", "01-06-2024 10:00", "Silver", 50000),
+        ("Jakarta", "Tangerang", "01-06-2024 10:00", "Bronze", 30000),
+        ("Jakarta", "Bandung", "01-06-2024 09:00", "Gold", 200000),
+        ("Jakarta", "Bandung", "01-06-2024 09:00", "Silver", 150000),
+        ("Jakarta", "Bandung", "01-06-2024 09:00", "Bronze", 120000),
+        ("Bogor", "Jakarta", "01-06-2024 13:00", "Gold", 100000),
+        ("Bogor", "Jakarta", "01-06-2024 13:00", "Silver", 80000),
+        ("Bogor", "Jakarta", "01-06-2024 13:00", "Bronze", 60000),
+        ("Bogor", "Tangerang", "01-06-2024 09:00", "Gold", 110000),
+        ("Bogor", "Tangerang", "01-06-2024 09:00", "Silver", 90000),
+        ("Bogor", "Tangerang", "01-06-2024 09:00", "Bronze", 70000),
+        ("Bogor", "Depok", "01-06-2024 11:00", "Gold", 70000),
+        ("Bogor", "Depok", "01-06-2024 11:00", "Silver", 50000),
+        ("Bogor", "Depok", "01-06-2024 11:00", "Bronze", 30000),
+        ("Bogor", "Bandung", "01-06-2024 10:00", "Gold", 150000),
+        ("Bogor", "Bandung", "01-06-2024 10:00", "Silver", 130000),
+        ("Bogor", "Bandung", "01-06-2024 10:00", "Bronze", 100000),
     ]
     with open('Kelompok-16\cities_and_buses.csv', 'w', newline='') as file:
         writer = csv.writer(file)
@@ -295,7 +320,7 @@ def confirm_payment(method):
     global payment_method
     payment_method = method
     messagebox.showinfo("Payment Success", f"Payment through {method} was successful!")
-    show_confirmation_page()  # Panggil halaman konfirmasi setelah pembayaran berhasil
+    show_confirmation_page()
 
 
 def generate_booking_code():
@@ -315,7 +340,7 @@ def show_confirmation_page():
     
     booking_details = f"""
     Booking Code: {booking_code}
-    Bus: {selected_bus[3]}
+    Bus Class: {selected_bus[3]}
     From: {selected_bus[0]}
     To: {selected_bus[1]}
     Departure: {selected_bus[2]}
@@ -323,7 +348,6 @@ def show_confirmation_page():
     Payment Method: {payment_method}
     """
 
-    # Menambahkan informasi harga bus
     try:
         price_per_seat = int(selected_bus[4])
         total_price = len(selected_seat) * price_per_seat
@@ -333,8 +357,36 @@ def show_confirmation_page():
 
     ctk.CTkLabel(confirmation_frame, text=booking_details, font=("Arial", 12), justify=LEFT).pack(pady=10)
 
-    ctk.CTkButton(confirmation_frame, text="Finish", font=("Arial", 12), command=show_city_selection).pack(pady=20)
+    ctk.CTkButton(confirmation_frame, text="Confirm Payment", font=("Arial", 12), command=show_payment_confirmation_page).pack(pady=10)
 
+def show_payment_confirmation_page():
+    hide_all_frames()
+    payment_confirmation_frame.pack()
+
+    for widget in payment_confirmation_frame.winfo_children():
+        widget.destroy()
+
+    ctk.CTkLabel(payment_confirmation_frame, text="Payment Confirmation", font=("Arial", 14), bg_color= "black").pack(pady=10)
+    ctk.CTkLabel(payment_confirmation_frame, text="Thank you for your order!", font=("Arial", 12), bg_color= "black").pack(pady=5)
+    
+    ctk.CTkButton(payment_confirmation_frame, text="Print e-Ticket", font=("Arial", 12), command=display_eticket).pack(pady=10)
+    ctk.CTkButton(payment_confirmation_frame, text="Back", font=("Arial", 12), command=show_confirmation_page).pack(pady=5)
+
+
+def display_eticket():
+    ticket_window = Toplevel()
+    ticket_window.title("e-Ticket")
+    ticket_window.geometry("400x300")
+
+    Label(ticket_window, text="e-Ticket", font=("Arial", 16, "bold")).pack(pady=10)
+    Label(ticket_window, text=f"Bus: {selected_bus[3]}", font=("Arial", 12)).pack()
+    Label(ticket_window, text=f"From: {selected_bus[0]}", font=("Arial", 12)).pack()
+    Label(ticket_window, text=f"To: {selected_bus[1]}", font=("Arial", 12)).pack()
+    Label(ticket_window, text=f"Departure: {selected_bus[2]}", font=("Arial", 12)).pack()
+    Label(ticket_window, text=f"Seats: {', '.join(selected_seat)}", font=("Arial", 12)).pack()
+    Label(ticket_window, text=f"Payment: {payment_method}", font=("Arial", 12)).pack()
+
+    Button(ticket_window, text="Close", command=ticket_window.destroy).pack(pady=20)
 
 
 def hide_all_frames():
@@ -462,6 +514,8 @@ seat_selection_frame = ctk.CTkFrame(root)
 payment_frame = ctk.CTkFrame(root)
 
 confirmation_frame = ctk.CTkFrame(root)
+
+payment_confirmation_frame = Frame(root)
 
 
 show_login_frame()
