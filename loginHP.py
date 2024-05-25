@@ -5,13 +5,13 @@ import smtplib
 from tkinter import *
 from tkinter import messagebox, ttk
 
-# Fungsi untuk membuat file CSV untuk data pengguna
+
 def create_user_table():
     with open('user_data.csv', 'a', newline='') as file:
         writer = csv.writer(file)
         writer.writerow(['name', 'username', 'email', 'phone', 'password', 'nik'])
 
-# Fungsi untuk mengirim email OTP
+
 def send_otp():
     global otp
     otp = "".join([str(random.randint(0, 9)) for i in range(6)])
@@ -21,7 +21,7 @@ def send_otp():
     server.starttls()
 
     from_mail = 'mhmmd.rayhan1104@gmail.com'
-    app_password = 'mkyh haip obvy idtg'  # Ganti dengan password aplikasi Anda
+    app_password = 'mkyh haip obvy idtg' 
 
     try:
         server.login(from_mail, app_password)
@@ -39,17 +39,17 @@ def send_otp():
     finally:
         server.quit()
 
-# Fungsi untuk memverifikasi OTP
+
 def verify_otp():
     entered_otp = entry_otp.get()
     if entered_otp == otp:
         messagebox.showinfo("Success", "OTP verified successfully!")
         save_user_data()
-        show_city_selection()  # Tampilkan halaman pemilihan kota setelah verifikasi OTP berhasil
+        show_city_selection()  
     else:
         messagebox.showerror("Error", "Invalid OTP. Please try again.")
 
-# Fungsi untuk menyimpan data pengguna ke file CSV
+
 def save_user_data():
     name = entry_name.get()
     username = entry_username.get()
@@ -63,44 +63,43 @@ def save_user_data():
         writer.writerow([name, username, email, phone, password, nik])
     messagebox.showinfo("Success", "Account created successfully!")
 
-# Fungsi untuk login
+
 def login():
     username = entry_login_username.get()
     password = entry_login_password.get()
     
     with open('user_data.csv', 'r') as file:
         reader = csv.reader(file)
-        next(reader)  # Skip header
+        next(reader)  
         for row in reader:
             if row[1] == username and row[4] == password:
                 messagebox.showinfo("Success", "Login successful!")
-                show_city_selection()  # Tampilkan halaman pemilihan kota setelah login berhasil
+                show_city_selection()
                 return
     messagebox.showerror("Error", "Invalid username or password.")
 
-# Fungsi untuk menampilkan frame login
 def show_login_frame():
     register_frame.pack_forget()
     login_frame.pack()
 
-# Fungsi untuk menampilkan frame registrasi
+
 def show_register_frame():
     login_frame.pack_forget()
     register_frame.pack()
 
-# Fungsi untuk menampilkan halaman pemilihan kota
-def show_city_selection():
-    login_frame.pack_forget()  # Sembunyikan frame login
-    city_selection_frame.pack()  # Tampilkan frame pemilihan kota
 
-# Fungsi untuk membaca daftar kota dari file CSV
+def show_city_selection():
+    login_frame.pack_forget()  
+    city_selection_frame.pack()  
+
+
 def get_cities():
     with open('cities_and_buses.csv', 'r') as file:
         reader = csv.reader(file)
         cities = [row[0] for row in reader if row[0] in ["Jakarta", "Tangerang", "Depok", "Bogor", "Bandung"]]
     return cities
 
-# Fungsi untuk menampilkan pilihan kota asal dan tujuan
+
 def show_selection():
     origin_city = origin_combobox.get()
     destination_city = destination_combobox.get()
@@ -117,17 +116,17 @@ def show_selection():
 
     messagebox.showinfo("Selected Details", f"Origin: {origin_city}\nDestination: {destination_city}\nDeparture Date: {departure_date}\nBus Classes: {bus_classes}")
 
-# Ambil daftar kota dari file CSV
+
 cities = get_cities()
 
-# GUI dengan Tkinter
+
 root = Tk()
 root.title("User Registration and City Selection")
 root.geometry("400x600")
 
 create_user_table()
 
-# Frame untuk login
+
 login_frame = Frame(root)
 Label(login_frame, text="Login", font=("Arial", 16)).pack(pady=10)
 
@@ -142,7 +141,7 @@ entry_login_password.pack(pady=5)
 Button(login_frame, text="Login", font=("Arial", 12), command=login).pack(pady=10)
 Button(login_frame, text="Register", font=("Arial", 12), command=show_register_frame).pack(pady=10)
 
-# Frame untuk registrasi
+
 register_frame = Frame(root)
 
 Label(register_frame, text="Name:", font=("Arial", 12)).pack(pady=5)
@@ -225,7 +224,7 @@ bronze_check.grid(row=0, column=2, padx=5)
 
 Button(city_selection_frame, text="Show Selection", font=("Arial", 12), command=show_selection).pack(pady=20)
 
-show_login_frame()  # Memanggil fungsi untuk menampilkan frame login saat aplikasi dimulai
+show_login_frame()  
 
 root.mainloop()
 

@@ -2,14 +2,14 @@ import csv
 from tkinter import *
 from tkinter import ttk, messagebox
 
-# Fungsi untuk membaca daftar kota dari file CSV
+
 def get_cities():
     with open('cities_and_buses.csv', 'r') as file:
         reader = csv.reader(file)
         cities = [row[0] for row in reader if row[0] in ["Jakarta", "Tangerang", "Depok", "Bogor", "Bandung"]]
     return cities
 
-# Fungsi untuk menampilkan pilihan kota asal dan tujuan
+
 def show_selection():
     origin_city = origin_combobox.get()
     destination_city = destination_combobox.get()
@@ -26,10 +26,10 @@ def show_selection():
 
     messagebox.showinfo("Selected Details", f"Origin: {origin_city}\nDestination: {destination_city}\nDeparture Date: {departure_date}\nBus Classes: {bus_classes}")
 
-# Ambil daftar kota dari file CSV
+
 cities = get_cities()
 
-# GUI dengan Tkinter
+
 root = Tk()
 root.title("City Selection")
 root.geometry("400x600")
