@@ -5,28 +5,118 @@ Depok
 Tangerang
 Bandung
 
-origin_city,destination_city,departure_datetime,bus_class,price
-Jakarta,Bogor,01-06-2024 08:00,Gold,100000
-Jakarta,Bogor,01-06-2024 08:00,Silver,80000
-Jakarta,Bogor,01-06-2024 08:00,Bronze,60000
-Jakarta,Depok,01-06-2024 12:00,Gold,70000
-Jakarta,Depok,01-06-2024 12:00,Silver,50000
-Jakarta,Depok,01-06-2024 12:00,Bronze,30000
-Jakarta,Tangerang,01-06-2024 10:00,Gold,70000
-Jakarta,Tangerang,01-06-2024 10:00,Silver,50000
-Jakarta,Tangerang,01-06-2024 10:00,Bronze,30000
-Jakarta,Bandung,01-06-2024 09:00,Gold,200000
-Jakarta,Bandung,01-06-2024 09:00,Silver,150000
-Jakarta,Bandung,01-06-2024 09:00,Bronze,120000
-Bogor,Jakarta,01-06-2024 13:00,Gold,100000
-Bogor,Jakarta,01-06-2024 13:00,Silver,80000
-Bogor,Jakarta,01-06-2024 13:00,Bronze,60000
-Bogor,Tangerang,01-06-2024 09:00,Gold,110000
-Bogor,Tangerang,01-06-2024 09:00,Silver,90000
-Bogor,Tangerang,01-06-2024 09:00,Bronze,70000
-Bogor,Depok,01-06-2024 11:00,Gold,70000
-Bogor,Depok,01-06-2024 11:00,Silver,50000
-Bogor,Depok,01-06-2024 11:00,Bronze,30000
-Bogor,Bandung,01-06-2024 10:00,Gold,150000
-Bogor,Bandung,01-06-2024 10:00,Silver,130000
-Bogor,Bandung,01-06-2024 10:00,Bronze,100000
+origin_city,destination_city,departure_datetime,estimasi,bus_class,price
+Jakarta,Bogor,01-06-2024 08:00 WIB,10:00 WIB,Gold,100000
+Jakarta,Bogor,01-06-2024 08:00 WIB,10:00 WIB,Silver,80000
+Jakarta,Bogor,01-06-2024 08:00 WIB,10:00 WIB,Bronze,60000
+Jakarta,Depok,01-06-2024 12:00 WIB,13:30 WIB,Gold,70000
+Jakarta,Depok,01-06-2024 12:00 WIB,13:30 WIB,Silver,50000
+Jakarta,Depok,01-06-2024 12:00 WIB,13:30 WIB,Bronze,30000
+Jakarta,Tangerang,01-06-2024 10:00 WIB,11:00 WIB,Gold,70000
+Jakarta,Tangerang,01-06-2024 10:00 WIB,11:00 WIB,Silver,50000
+Jakarta,Tangerang,01-06-2024 10:00 WIB,11:00 WIB,Bronze,30000
+Jakarta,Bandung,01-06-2024 09:00 WIB,12:00 WIB,Gold,200000
+Jakarta,Bandung,01-06-2024 09:00 WIB,12:00 WIB,Silver,150000
+Jakarta,Bandung,01-06-2024 09:00 WIB,12:00 WIB,Bronze,120000
+Bogor,Jakarta,01-06-2024 13:00 WIB,15:00 WIB,Gold,100000
+Bogor,Jakarta,01-06-2024 13:00 WIB,15:00 WIB,Silver,80000
+Bogor,Jakarta,01-06-2024 13:00 WIB,15:00 WIB,Bronze,60000
+Bogor,Tangerang,01-06-2024 09:00 WIB,11:30 WIB,Gold,110000
+Bogor,Tangerang,01-06-2024 09:00 WIB,11:30 WIB,Silver,90000
+Bogor,Tangerang,01-06-2024 09:00 WIB,11:30 WIB,Bronze,70000
+Bogor,Depok,01-06-2024 11:00 WIB,12:00 WIB,Gold,70000
+Bogor,Depok,01-06-2024 11:00 WIB,12:00 WIB,Silver,50000
+Bogor,Depok,01-06-2024 11:00 WIB,12:00 WIB,Bronze,30000
+Bogor,Bandung,01-06-2024 10:00 WIB,11:30 WIB,Gold,150000
+Bogor,Bandung,01-06-2024 10:00 WIB,11:30 WIB,Silver,130000
+Bogor,Bandung,01-06-2024 10:00 WIB,11:30 WIB,Bronze,100000
+Tangerang,Bogor,01-06-2024 13:00 WIB,15.30 WIB,Silver,90000
+Tangerang,Bogor,01-06-2024 13:00 WIB,15:30 WIB,Gold,100000
+Tangerang,Bogor,01-06-2024 13:00 WIB,15:30 WIB,Bronze,80000
+Tangerang,Depok,01-06-2024 10:00 WIB,11:30 WIB,Gold,90000
+Tangerang,Depok,01-06-2024 10:00 WIB,11:30 WIB,Silver,80000
+Tangerang,Depok,01-06-2024 10:00 WIB,11:30 WIB,Bronze,70000
+Tangerang,Jakarta,01-06-2024 15:00 WIB,16:00 WIB,Gold,60000
+Tangerang,Jakarta,01-06-2024 15:00 WIB,16:00 WIB,Bronze,35000
+Tangerang,Jakarta,01-06-2024 15:00 WIB,16:00 WIB,Silver,45000
+Tangerang,Bandung,01-06-2024 08:00 WIB,11:30 WIB,Gold,195000
+Tangerang,Bandung,01-06-2024 08:00 WIB,11:30 WIB,Bronze,150000
+Tangerang,Bandung,01-06-2024 08:00 WIB,11:30 WIB,Silver,170000                                                                                                                                                                                                          
+Depok,Bogor,01-06-2024 14:00 WIB,15:00 WIB,Bronze,35000
+Depok,Bogor,01-06-2024 14:00 WIB,15:00 WIB,Silver,45000
+Depok,Bogor,01-06-2024 14:00 WIB,15:00 WIB,Gold,60000
+Depok,Tangerang,01-06-2024 13:00 WIB,14:30 WIB,Bronze,70000
+Depok,Tangerang,01-06-2024 13:00 WIB,14:30 WIB,Silver,80000
+Depok,Tangerang,01-06-2024 13:00 WIB,14:30 WIB,Gold,10000
+Depok,Bandung,01-06-2024 07:00 WIB,10:30 WIB,Bronze,80000
+Depok,Bandung,01-06-2024 07:00 WIB,10:30 WIB,Silver,100000
+Depok,Bandung,01-06-2024 07:00 WIB,10:30 WIB,Gold,120000
+Bandung,Bogor,01-06-2024 11:00 WIB,12:30 WIB,Gold,150000
+Bandung,Bogor,01-06-2024 11:00 WIB,12:30 WIB,Silver,135000
+Bandung,Bogor,01-06-2024 11:00 WIB,12:30 WIB,Bronze,120000
+Bandung,Jakarta,01-06-2024 17:00 WIB,20:00 WIB,Gold,120000
+Bandung,Jakarta,01-06-2024 17:00 WIB,20:00 WIB,Silver,90000
+Bandung,Jakarta,01-06-2024 17:00 WIB,20:00 WIB,Bronze,80000
+Bandung,Depok,01-06-2024 16:00 WIB,19:30 WIB,Gold,120000
+Bandung,Depok,01-06-2024 16:00 WIB,19:30 WIB,Silver,100000
+Bandung,Depok,01-06-2024 16:00 WIB,19:30 WIB,Bronze,80000
+Bandung,Tangerang,01-06-2024 09:00 WIB,12:30 WIB,Gold,195000
+Bandung,Tangerang,01-06-2024 09:00 WIB,12:30 WIB,Silver,170000
+Bandung,Tangerang,01-06-2024 09:00 WIB,12:30 WIB,Bronze,150000
+Jakarta,Bogor,02-06-2024 08:00 WIB,10:00 WIB,Gold,100000
+Jakarta,Bogor,02-06-2024 08:00 WIB,10:00 WIB,Silver,80000
+Jakarta,Bogor,02-06-2024 08:00 WIB,10:00 WIB,Bronze,60000
+Jakarta,Depok,02-06-2024 12:00 WIB,13:30 WIB,Gold,70000
+Jakarta,Depok,02-06-2024 12:00 WIB,13:30 WIB,Silver,50000
+Jakarta,Depok,02-06-2024 12:00 WIB,13:30 WIB,Bronze,30000
+Jakarta,Tangerang,02-06-2024 10:00 WIB,11:00 WIB,Gold,70000
+Jakarta,Tangerang,02-06-2024 10:00 WIB,11:00 WIB,Silver,50000
+Jakarta,Tangerang,02-06-2024 10:00 WIB,11:00 WIB,Bronze,30000
+Jakarta,Bandung,02-06-2024 09:00 WIB,12:00 WIB,Gold,200000
+Jakarta,Bandung,02-06-2024 09:00 WIB,12:00 WIB,Silver,150000
+Jakarta,Bandung,02-06-2024 09:00 WIB,12:00 WIB,Bronze,120000
+Bogor,Jakarta,02-06-2024 13:00 WIB,15:00 WIB,Gold,100000
+Bogor,Jakarta,02-06-2024 13:00 WIB,15:00 WIB,Silver,80000
+Bogor,Jakarta,02-06-2024 13:00 WIB,15:00 WIB,Bronze,60000
+Bogor,Tangerang,02-06-2024 09:00 WIB,11:30 WIB,Gold,110000
+Bogor,Tangerang,02-06-2024 09:00 WIB,11:30 WIB,Silver,90000
+Bogor,Tangerang,02-06-2024 09:00 WIB,11:30 WIB,Bronze,70000
+Bogor,Depok,02-06-2024 11:00 WIB,12:00 WIB,Gold,70000
+Bogor,Depok,02-06-2024 11:00 WIB,12:00 WIB,Silver,50000
+Bogor,Depok,02-06-2024 11:00 WIB,12:00 WIB,Bronze,30000
+Bogor,Bandung,02-06-2024 10:00 WIB,11:30 WIB,Gold,150000
+Bogor,Bandung,02-06-2024 10:00 WIB,11:30 WIB,Silver,130000
+Bogor,Bandung,02-06-2024 10:00 WIB,11:30 WIB,Bronze,100000
+Tangerang,Bogor,02-06-2024 13:00 WIB,15.30 WIB,Silver,90000
+Tangerang,Bogor,02-06-2024 13:00 WIB,15:30 WIB,Gold,100000
+Tangerang,Bogor,02-06-2024 13:00 WIB,15:30 WIB,Bronze,80000
+Tangerang,Depok,02-06-2024 10:00 WIB,11:30 WIB,Gold,90000
+Tangerang,Depok,02-06-2024 10:00 WIB,11:30 WIB,Silver,80000
+Tangerang,Depok,02-06-2024 10:00 WIB,11:30 WIB,Bronze,70000
+Tangerang,Jakarta,02-06-2024 15:00 WIB,16:00 WIB,Gold,60000
+Tangerang,Jakarta,02-06-2024 15:00 WIB,16:00 WIB,Bronze,35000
+Tangerang,Jakarta,02-06-2024 15:00 WIB,16:00 WIB,Silver,45000
+Tangerang,Bandung,02-06-2024 08:00 WIB,11:30 WIB,Gold,195000
+Tangerang,Bandung,02-06-2024 08:00 WIB,11:30 WIB,Bronze,150000
+Tangerang,Bandung,02-06-2024 08:00 WIB,11:30 WIB,Silver,170000                                                                                                                                                                                                            
+Depok,Bogor,02-06-2024 14:00 WIB,15:00 WIB,Bronze,35000
+Depok,Bogor,02-06-2024 14:00 WIB,15:00 WIB,Silver,45000
+Depok,Bogor,02-06-2024 14:00 WIB,15:00 WIB,Gold,60000
+Depok,Tangerang,02-06-2024 13:00 WIB,14:30 WIB,Bronze,70000
+Depok,Tangerang,02-06-2024 13:00 WIB,14:30 WIB,Silver,80000
+Depok,Tangerang,02-06-2024 13:00 WIB,14:30 WIB,Gold,10000
+Depok,Bandung,02-06-2024 07:00 WIB,10:30 WIB,Bronze,80000
+Depok,Bandung,02-06-2024 07:00 WIB,10:30 WIB,Silver,100000
+Depok,Bandung,02-06-2024 07:00 WIB,10:30 WIB,Gold,120000
+Bandung,Bogor,02-06-2024 11:00 WIB,12:30 WIB,Gold,150000
+Bandung,Bogor,02-06-2024 11:00 WIB,12:30 WIB,Silver,135000
+Bandung,Bogor,02-06-2024 11:00 WIB,12:30 WIB,Bronze,120000
+Bandung,Jakarta,02-06-2024 17:00 WIB,20:00 WIB,Gold,120000
+Bandung,Jakarta,02-06-2024 17:00 WIB,20:00 WIB,Silver,90000
+Bandung,Jakarta,02-06-2024 17:00 WIB,20:00 WIB,Bronze,80000
+Bandung,Depok,02-06-2024 16:00 WIB,19:30 WIB,Gold,120000
+Bandung,Depok,02-06-2024 16:00 WIB,19:30 WIB,Silver,100000
+Bandung,Depok,02-06-2024 16:00 WIB,19:30 WIB,Bronze,80000
+Bandung,Tangerang,02-06-2024 09:00 WIB,12:30 WIB,Gold,195000
+Bandung,Tangerang,02-06-2024 09:00 WIB,12:30 WIB,Silver,170000
+Bandung,Tangerang,02-06-2024 09:00 WIB,12:30 WIB,Bronze,150000
