@@ -8,6 +8,7 @@ import customtkinter as ctk
 import string
 from PIL import Image, ImageTk
 import tkinter as tk
+from fpdf import FPDF
 
 selected_bus = None
 buses_info = []
@@ -54,7 +55,7 @@ def save_user_data():
         writer = csv.writer(file)
         writer.writerow([name, username, email, phone, password, nik])
     
-    messagebox.showinfo("Success", "Registration Successful. Please Log in again to continue.")
+    messagebox.showinfo("Success", "Pendaftaran akun telah berhasil!\nDimohon untuk Login kembali.")
     show_login_frame()
 
 def send_otp():
@@ -162,7 +163,7 @@ def show_menu_frame() :
 
     ctk.CTkButton(menu_frame, text="Pesan Tiket Baru", font=("Arial", 12), command=show_city_selection).place(relx=0.5,rely=0.5, anchor="center")
     ctk.CTkButton(menu_frame, text="Pembatalan Tiket", font=("Arial", 12), command=show_cancel_seat_page).place(relx=0.5,rely=0.6, anchor="center")
-
+    ctk.CTkButton(menu_frame, text="Logout", font=("Arial", 12), command=show_login_frame).place(relx=0.5,rely=0.7, anchor="center")
 
 def show_city_selection():
     hide_all_frames()
@@ -338,10 +339,10 @@ def confirm_seat_selection(bus_info, seats, selected_classes):
     if selected_seat:
         print(f"Selected seats: {selected_seat}")
         booked_seats.update(selected_seat)
-        messagebox.showinfo("Success", f"Seats selected: {', '.join(selected_seat)}")
+        messagebox.showinfo("Success", f"Kursi : {', '.join(selected_seat)} berhasil dipilih")
         show_payment_page()
     else:
-        messagebox.showerror("Error", "No seats selected. Please select at least one seat.")
+        messagebox.showerror("Error", "Tidak ada kursi yang dipilih. Dimohon untuk memilih kursi terlebih dahulu.")
 
 
 def get_cities():
@@ -469,7 +470,7 @@ def confirm_payment(selected_payment_method):
     virtual_account = get_virtual_account(payment_method)
     booking_codes = generate_booking_code(len(selected_seat))
     booking_code = booking_codes  # Store the list of booking codes
-    messagebox.showinfo("Payment Success", f"Payment through {payment_method} was successful!\nVirtual Account: {virtual_account}")
+    messagebox.showinfo("Payment Success", f"Metode pembayaran dengan menggunakan {payment_method} berhasil dipilih.")
     show_confirmation_page()
 
 
@@ -563,6 +564,7 @@ def show_confirmation_page():
     arrow5_button.place(x=0, y=5)
 
 def show_payment_confirmation_page():
+    messagebox.showinfo("Pembayaran Berhasil", "Terima kasih, pembayaran Anda telah berhasil.")
     hide_all_frames()
     payment_confirmation_frame.place(x=480,y=230)
 
@@ -630,6 +632,66 @@ def display_eticket():
     header_label.config(fg="blue")  
     close_button.config(bg="red", fg="white")  
 
+    # Buat PDF dari e-ticket
+    ticket_details = {
+        "Bus Class": selected_bus[4],
+        "From": selected_bus[0],
+        "To": selected_bus[1],
+        "Departure": selected_bus[2],
+        "Estimasi Tiba": selected_bus[3],
+        "Seats": ', '.join(selected_seat),
+        "Booking Code": booking_code
+    }
+    pdf_file = create_pdf_ticket(data, ticket_details)
+
+    # Kirim PDF melalui email
+    send_ticket_via_email(data['email'], pdf_file)
+    messagebox.showinfo("e-Ticket Sent", "Your e-ticket has been sent to your email.")
+
+
+
+def create_pdf_ticket(data, ticket_details):
+    pdf = FPDF()
+    pdf.add_page()
+
+    pdf.set_font("Arial", size=12)
+    
+    pdf.cell(200, 10, txt="e-Ticket", ln=True, align='C')
+    pdf.ln(10)
+
+    for label, value in data.items():
+        pdf.cell(200, 10, txt=f"{label}: {value}", ln=True)
+
+    pdf.ln(10)
+    
+    for label, value in ticket_details.items():
+        pdf.cell(200, 10, txt=f"{label}: {value}", ln=True)
+
+    pdf_file = "e-ticket.pdf"
+    pdf.output(pdf_file)
+    return pdf_file
+
+# Fungsi untuk mengirim email dengan lampiran PDF
+def send_ticket_via_email(to_email, pdf_file):
+    from_email = 'mhmmd.rayhan1104@gmail.com'
+    app_password = 'mkyh haip obvy idtg'
+
+    msg = EmailMessage()
+    msg['Subject'] = "Your e-Ticket from Amour Biz"
+    msg['From'] = from_email
+    msg['To'] = to_email
+
+    msg.set_content("Please find attached your e-ticket. Thank you for choosing Amour Biz!")
+
+    with open(pdf_file, 'rb') as f:
+        file_data = f.read()
+        file_name = pdf_file
+        msg.add_attachment(file_data, maintype='application', subtype='octet-stream', filename=file_name)
+
+    with smtplib.SMTP('smtp.gmail.com', 587) as server:
+        server.starttls()
+        server.login(from_email, app_password)
+        server.send_message(msg)
 
 def show_cancel_seat_page():
     hide_all_frames()
@@ -662,7 +724,7 @@ def show_cancel_seat_page():
 
     booked_seats = load_user_booked_seats(username)
     if not booked_seats:
-        ctk.CTkLabel(cancel_seat_frame, height=1, text="You have no booked seats.", text_color="black", font=("Prata", 14), fg_color="#ebac4e").place(relx=0.5, rely=0.38, anchor='center')
+        ctk.CTkLabel(cancel_seat_frame, height=1, text="Tidak ada pemesanan bis saat ini.", text_color="black", font=("Prata", 16), fg_color="#ebac4e").place(relx=0.5, rely=0.38, anchor='center')
         return
 
     y_offset = 0.2
@@ -700,7 +762,7 @@ def cancel_seat_booking(seat_info):
             writer = csv.writer(file)
             writer.writerows(updated_rows)
         
-        messagebox.showinfo("Success", f"Seat {seat_info[4]} has been successfully canceled.")
+        messagebox.showinfo("Success", f"Pemesanan Kursi {seat_info[4]} dengan Kode Pemesanan {seat_info[6]} telah berhasil dibatalkan.")
         show_cancel_seat_page()  # Refresh the cancel seat page
 
     except Exception as e:
